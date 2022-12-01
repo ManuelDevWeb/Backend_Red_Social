@@ -82,7 +82,29 @@ async function query(table, data) {
 }
 
 // Actualizar un dato
-function update() {}
+async function update(table, id, data) {
+  // Obteniendo todos los datos
+  let collection = await list(table);
+
+  // Obteniendo el indice del elemento
+  const indexItem = await collection.findIndex((item) => item.id === id);
+
+  if (indexItem === -1) {
+    return false;
+  }
+
+  const element = collection[indexItem];
+
+  collection[index] = {
+    name: data.name || element.name,
+    username: data.username || element.username,
+    id: element.id,
+  };
+
+  console.log(collection);
+
+  return true;
+}
 
 module.exports = {
   list,
