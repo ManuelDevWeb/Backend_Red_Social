@@ -2,7 +2,11 @@
 const error = require("../utils/error");
 
 const db = {
-  user: [],
+  user: [
+    { id: "100", username: "test1", name: "Manuel" },
+    { id: "101", username: "test2", name: "Carlos" },
+    { id: "102", username: "test3", name: "Valencia" },
+  ],
 };
 
 // Obtener lista de datos
@@ -45,10 +49,37 @@ function insert(table, data) {
 }
 
 // Eliminar un dato
-function remove() {}
+async function remove(table, id) {
+  // Obteniendo todos los datos
+  let collection = await list(table);
+
+  // Obteniendo indice del elemento a eliminar
+  const indexItem = await collection.findIndex((item) => item.id === id);
+
+  if (indexItem < 0) {
+    return false;
+  }
+
+  // Eliminamos 1 elemento desde el index del elemento encontrado en la coleccion
+  collection.splice(indexItem, 1);
+
+  return true;
+}
 
 // Obtener datos por atributos diferentes a id
-function query() {}
+async function query(table, data) {
+  // Obteniendo todos los datos
+  let collection = await list(table);
+
+  // Obteniendo la key de la data enviada
+  let keys = Object.keys(data);
+  // console.log(keys);
+  let key = keys[0];
+  // console.log(key);
+
+  // Validamos si la key del objeto que tenemos en la coleccion, coindice con la key del objeto del elemento enviado
+  return collection.find((item) => item[key] === data[key]) || null;
+}
 
 // Actualizar un dato
 function update() {}
