@@ -95,7 +95,7 @@ async function update(table, id, data) {
 
   const element = collection[indexItem];
 
-  collection[index] = {
+  collection[indexItem] = {
     name: data.name || element.name,
     username: data.username || element.username,
     id: element.id,
