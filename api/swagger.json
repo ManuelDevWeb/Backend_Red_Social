@@ -1,0 +1,72 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "The API for the Red Social Project",
+    "version": "1.0.0",
+    "title": "Red Social Node.js"
+  },
+  "host": "virtserver.swaggerhub.com",
+  "basePath": "/ManuelDevWeb/Red_Social/1.0.0",
+  "tags": [
+    {
+      "name": "User",
+      "description": "Endpoints Users"
+    }
+  ],
+  "schemes": ["https", "http"],
+  "paths": {
+    "/user": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get all users",
+        "description": "Gell all users from DB",
+        "operationId": "getUsers",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "User list"
+          }
+        }
+      },
+      "post": {
+        "tags": ["User"],
+        "summary": "Create a user",
+        "description": "Create a user in DB",
+        "operationId": "createUser",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Create a user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
