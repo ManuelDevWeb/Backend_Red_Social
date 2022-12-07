@@ -7,6 +7,8 @@ const swaggerUI = require("swagger-ui-express");
 const config = require("../config");
 // Importando rutas de user
 const user = require("./components/user/routes");
+// Importando rutas de auth
+const auth = require("./components/auth/routes");
 // Importando documentacion generada en Swagger editor
 const swaggerDoc = require("./swagger.json");
 
@@ -22,6 +24,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Usuarios
 app.use("/api/user", user);
+// Auth
+app.use("/api/auth", auth);
 // API Documentation
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 

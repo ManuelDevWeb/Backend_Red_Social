@@ -1,3 +1,11 @@
+// Importando bcrypt
+const bcrypt = require("bcrypt");
+
+// Importando funciones del jwt
+const jwtAuth = require("../../../auth");
+// Importando error personalizado
+const error = require("../../../utils/error");
+
 const TABLE = "auth";
 
 // Class controller auth
@@ -13,12 +21,12 @@ class AuthController {
     };
 
     if (data.username) {
-      auth.username = data.username;
+      authData.username = data.username;
     }
 
     if (data.password) {
-      // TODO: Guardando password encriptada
-      auth.password = data.password;
+      // Guardando la password encriptada
+      authData.password = await bcrypt.hash(data.password, 6);
     }
 
     // Obtenemos la respuesta al momento de insertar un usuario
@@ -30,11 +38,14 @@ class AuthController {
     // Obteniendo el usuario encontrado por el username
     const user = await this.store.query(TABLE, { username });
 
-    // TODO: COMPARE PASSWORD
+    // Comparando password ingresada con la que hay en la DB
+    const equals = await bcrypt.compare(password, user.password);
 
-    // TODO: RETURN JWT
+    if (!equals) {
+      throw error("Invalid credentials", 401);
+    }
 
-    return;
+    return jwtAuth.signToken(user);
   }
 }
 

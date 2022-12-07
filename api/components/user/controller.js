@@ -1,3 +1,6 @@
+// Importando controller auth instanciado
+const authController = require("../auth");
+
 const TABLE = "user";
 
 // Class controller user
@@ -20,7 +23,7 @@ class UserController {
   }
 
   // Insertar un usuario
-  insertUser(data) {
+  async insertUser(data) {
     // Recibimos la data del body
     const user = {
       name: data.name,
@@ -32,6 +35,15 @@ class UserController {
       user.id = data.id;
     } else {
       user.id = (Math.random() + 1).toString(36).substring(7);
+    }
+
+    // Si existe password o username incovamos el metodo insertUser de la clase AuthController
+    if (data.password || data.username) {
+      await authController.insertUser({
+        id: user.id,
+        username: user.username,
+        password: data.password,
+      });
     }
 
     // Obtenemos la respuesta al momento de insertar un usuario
