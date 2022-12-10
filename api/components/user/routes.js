@@ -5,6 +5,8 @@ const express = require("express");
 const response = require("../../../network/response");
 // Importando controller de user instanciado
 const userController = require("./index");
+// Importando middleware de seguridad
+const secure = require("./secure");
 
 // Instanciando routes de express
 const router = express.Router();
@@ -62,30 +64,35 @@ router.post("/", async (req, res) => {
 });
 
 // Actualizar usuario
-router.patch("/:id", async (req, res) => {
-  try {
-    // Actualizamos el usuario y almacenamos el valor que nos retornan
-    const userUpdated = await userController.updateUser(
-      req.params.id,
-      req.body
-    );
-
-    if (userUpdated) {
-      // Enviamos respuesta de exito a traves de la funcion personalizada
-      response.succes(
-        req,
-        res,
-        `User with id ${req.params.id} updated succesfully`
+router.patch(
+  "/:id",
+  // Llamamos el middleware para validar que estamos logeados
+  secure("update"),
+  async (req, res) => {
+    try {
+      // Actualizamos el usuario y almacenamos el valor que nos retornan
+      const userUpdated = await userController.updateUser(
+        req.params.id,
+        req.body
       );
-    } else {
+
+      if (userUpdated) {
+        // Enviamos respuesta de exito a traves de la funcion personalizada
+        response.succes(
+          req,
+          res,
+          `User with id ${req.params.id} updated succesfully`
+        );
+      } else {
+        // Enviamos respuesta de error a traves de la funcion personalizada
+        response.error(req, res, "User doesn't found", 400);
+      }
+    } catch (error) {
       // Enviamos respuesta de error a traves de la funcion personalizada
-      response.error(req, res, "User doesn't found", 400);
+      response.error(req, res, error.message, 500);
     }
-  } catch (error) {
-    // Enviamos respuesta de error a traves de la funcion personalizada
-    response.error(req, res, error.message, 500);
   }
-});
+);
 
 // Eliminar un usuario
 router.delete("/:id", async (req, res) => {

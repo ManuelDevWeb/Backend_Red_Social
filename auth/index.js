@@ -11,11 +11,25 @@ function signToken(data) {
   return jwt.sign(data, config.jwt.secret);
 }
 
+// Objeto con funciones
+const check = {
+  own: function (req, owner) {
+    const decoded = decodeHeader(req);
+
+    // Comprobamos si el id ingresador corresponde al jwt actual
+    if (decoded.id !== owner) {
+      throw error("Not authorized", 401);
+    }
+  },
+  logged: function (req) {
+    decodeHeader(req);
+  },
+};
+
 // Funcion para validar y decodificar header
 function decodeHeader(req) {
   const authorization = req.headers.authorization || "";
   const token = getToken(authorization);
-
   // Extrayendo el payload del token
   const decoded = verify(token);
 
@@ -50,4 +64,5 @@ function verify(token) {
 // Exportando modulo
 module.exports = {
   signToken,
+  check,
 };
