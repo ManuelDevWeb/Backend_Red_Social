@@ -69,7 +69,13 @@ class UserController {
   }
 
   // Seguir un usuario
-  followUser(from, to) {}
+  followUser(from, to) {
+    // Obtenemos la respuesta al momento de insertar un usuario
+    return this.store.insert(TABLE + "_follow", {
+      user_from: from,
+      user_to: to,
+    });
+  }
 
   // Seguidos de un usuario
   following(id) {}

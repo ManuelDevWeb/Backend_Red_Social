@@ -66,7 +66,7 @@ router.post("/", async (req, res) => {
 // Actualizar usuario
 router.patch(
   "/:id",
-  // Llamamos el middleware para validar que estamos logeados
+  // Llamamos el middleware para validar que estamos logeados y podemos actualizar el usuario
   secure("update"),
   async (req, res) => {
     try {
@@ -118,7 +118,28 @@ router.delete("/:id", async (req, res) => {
 });
 
 // Seguir un usuario (id del usuario que queremos seguir)
-router.post("/follow/:id", async (req, res) => {});
+router.post(
+  "/follow/:id",
+  // Llamamos el middleware para validar que estamos logeados
+  secure("logged"),
+  async (req, res) => {
+    try {
+      // Enviamos la data a insertar
+      await userController.followUser(req.user.id, req.params.id);
+
+      // Enviamos respuesta de exito a traves de la funcion personalizada
+      response.succes(
+        req,
+        res,
+        `User with id ${req.params.id} followed succesfully`,
+        201
+      );
+    } catch (error) {
+      // Enviamos respuesta a traves de la funcion personalizada
+      response.error(req, res, error.message, 500);
+    }
+  }
+);
 
 // Obtener seguidores de un usuario
 router.get("/following/:id", async (req, res) => {});
