@@ -71,14 +71,14 @@ class UserController {
   // Seguir un usuario
   followUser(from, to) {
     // Obtenemos la respuesta al momento de insertar un usuario
-    return this.store.insert(TABLE + "_follow", {
-      user_from: from,
-      user_to: to,
-    });
   }
 
   // Seguidos de un usuario
-  following(id) {}
+  async following(id) {
+    // Vamos a relacionar los usuarios que en la tabla user tenga el mismo id que en el atributo user_to de la tabla user_follow
+    // join = {user: 'user_to}
+    // Buscamos en la tabla user_follow el usuario donde coincida el id con user_from
+  }
 }
 
 module.exports = UserController;
