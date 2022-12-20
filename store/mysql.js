@@ -111,7 +111,28 @@ async function remove(table, id) {
 }
 
 // Obtener dato por atributos diferentes a id
-function query() {}
+async function query(table, query, join) {
+  // table -> user_follow
+  // query -> {user_from: id}
+  // join -> {user: 'user_to'}
+
+  let joinQuery = "";
+
+  if (join) {
+    const key = Object.keys(join)[0]; // user
+    const val = join[key]; // user_to
+    // JOIN user ON user_follow.user_to=user.id
+    joinQuery = `JOIN ${key} ON ${table}.${val}=${key}.id`;
+  }
+
+  const follows = await connection.query(
+    `SELECT * FROM ${table} ${joinQuery} WHERE ${table}.?`,
+    // ? es el valor que se recibe en la query, en este caso user_from:id
+    query
+  );
+
+  return follows;
+}
 
 // Exportando las funciones
 module.exports = {
