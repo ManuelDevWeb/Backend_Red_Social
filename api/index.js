@@ -9,6 +9,8 @@ const config = require("../config");
 const user = require("./components/user/routes");
 // Importando rutas de auth
 const auth = require("./components/auth/routes");
+// Importando rutas de post
+const post = require("./components/post/routes");
 // Importando documentacion generada en Swagger editor
 const swaggerDoc = require("./swagger.json");
 
@@ -26,6 +28,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/user", user);
 // Auth
 app.use("/api/auth", auth);
+// Post
+app.use("/api/post", post);
 // API Documentation
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
