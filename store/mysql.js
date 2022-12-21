@@ -33,7 +33,7 @@ function handleConnection() {
   });
 
   // Capturando el evento error de la conexion en caso de que lo haya
-  connection.on((err) => {
+  connection.on("error", (err) => {
     console.log("[db error]", err);
     if (err.code === "PROTOCOL_CONNECTION_LOST") {
       handleConnection();
@@ -43,6 +43,8 @@ function handleConnection() {
   });
 }
 
+handleConnection();
+
 // Listar los datos de una tabla
 function list(table) {
   // Una promesa es el exito o el fracaso de una operacion asincrona
@@ -51,63 +53,81 @@ function list(table) {
       if (err) {
         reject(err);
       }
+
+      resolve(data);
     });
   });
 }
 
 // Obtener dato de una tabla
 async function get(table, id) {
-  // Consultando el dato a traves de la query
-  const element = await connection.query(
-    `SELECT * FROM ${table} WHERE id=${id}`
-  );
+  return new Promise((resolve, reject) => {
+    // Consultando el dato a traves de la query
+    connection.query(`SELECT * FROM ${table} WHERE id=${id}`, (err, data) => {
+      if (err) {
+        reject(err);
+      }
 
-  if (!element || element === null) {
-    throw error("User doesn't exist", 500);
-  }
-
-  return element;
+      resolve(data);
+    });
+  });
 }
 
 // Insertar dato en una tabla
 async function insert(table, data) {
-  // Insertamos el dato a traves de la query
-  await connection.query(
-    `
-    INSERT INTO ${table} SET ?
-  `,
-    // ? son los valores que se van a setear al momento de recibir data
-    data
-  );
+  return new Promise((resolve, reject) => {
+    // Insertamos el dato a traves de la query
+    connection.query(
+      `INSERT INTO ${table} SET ?`,
+      // ? son los valores que se van a setear al momento de recibir data
+      data,
+      (err, data) => {
+        if (err) {
+          reject(err);
+        }
 
-  return true;
+        resolve(data);
+      }
+    );
+  });
 }
 
 // Actualizar dato de una tabla
 async function update(table, id, data) {
-  // Actualizamos el elemento a traves de la query
-  await connection.query(
-    `
-    UPDATE ${table} SET ? WHERE id=?`,
-    // El primer ? son los valores que se van a setear con la data recibida, el segundo ? es el valor del id que se recibe
-    [data, id]
-  );
+  return new Promise((resolve, reject) => {
+    // Actualizamos el elemento a traves de la query
+    connection.query(
+      `UPDATE ${table} SET ? WHERE id=?`,
+      // El primer ? son los valores que se van a setear con la data recibida, el segundo ? es el valor del id que se recibe
+      [data, id],
+      (err, data) => {
+        if (err) {
+          reject(err);
+        }
 
-  return true;
+        resolve(data);
+      }
+    );
+  });
 }
 
 // Eliminar dato de una tabla
 async function remove(table, id) {
-  // Eliminamos el elemento a traves de la query
-  await connection.query(
-    `
-    DELETE FROM ${table} WHERE id=?
-  `,
-    // ? es el valor del id que se recibe
-    id
-  );
+  return new Promise((resolve, reject) => {
+    // Eliminamos el elemento a traves de la query
+    connection.query(
+      `DELETE FROM ${table} WHERE id=?`,
+      // ? es el valor del id que se recibe
+      id,
+      (err, data) => {
+        if (err) {
+          reject(err);
+        }
 
-  return true;
+        resolve(data);
+      }
+    );
+  });
 }
 
 // Obtener dato por atributos diferentes a id
@@ -125,13 +145,24 @@ async function query(table, query, join) {
     joinQuery = `JOIN ${key} ON ${table}.${val}=${key}.id`;
   }
 
-  const follows = await connection.query(
-    `SELECT * FROM ${table} ${joinQuery} WHERE ${table}.?`,
-    // ? es el valor que se recibe en la query, en este caso user_from:id
-    query
-  );
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `SELECT * FROM ${table} ${joinQuery} WHERE ${table}.?`,
+      // ? es el valor que se recibe en la query, en este caso user_from:id
+      query,
+      (err, data) => {
+        if (err) {
+          reject(err);
+        }
 
-  return follows;
+        if (join) {
+          resolve(data || null);
+        } else {
+          resolve(data[0] || null);
+        }
+      }
+    );
+  });
 }
 
 // Exportando las funciones
@@ -143,5 +174,3 @@ module.exports = {
   remove,
   query,
 };
-
-handleConnection();

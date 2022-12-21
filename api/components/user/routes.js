@@ -121,19 +121,36 @@ router.delete("/:id", async (req, res) => {
 router.post(
   "/follow/:id",
   // Llamamos el middleware para validar que estamos logeados
-
+  secure("logged"),
   async (req, res) => {
     try {
       // Enviamos la data a insertar
+      await userController.followUser(req.user.id, req.params.id);
       // Enviamos respuesta de exito a traves de la funcion personalizada
+      response.succes(
+        req,
+        res,
+        `User whit id: ${req.params.id} followed successfully`,
+        201
+      );
     } catch (error) {
       // Enviamos respuesta a traves de la funcion personalizada
+      response.error(req, res, error.message, 500);
     }
   }
 );
 
 // Obtener seguidores de un usuario
-router.get("/following/:id", async (req, res) => {});
+router.get("/following/:id", async (req, res) => {
+  try {
+    const data = await userController.following(req.params.id);
+    // Enviando respuesta a traves de la funcion personalizada
+    response.succes(req, res, data, 200);
+  } catch (error) {
+    // Enviando respuesta a traves de la funcion personalizada
+    response.error(req, res, error.message, 500);
+  }
+});
 
 // Exportando modulo
 module.exports = router;

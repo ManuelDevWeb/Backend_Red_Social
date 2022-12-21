@@ -43,7 +43,7 @@ function insert(table, data) {
   // Insertamos un nuevo dato en la data correspondiente a la key recibida
   db[table].push(data);
 
-  console.log(db);
+  // console.log(db);
 
   return true;
 }
@@ -101,7 +101,7 @@ async function update(table, id, data) {
     id: element.id,
   };
 
-  console.log(collection);
+  // console.log(collection);
 
   return true;
 }
