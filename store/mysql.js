@@ -63,7 +63,7 @@ function list(table) {
 async function get(table, id) {
   return new Promise((resolve, reject) => {
     // Consultando el dato a traves de la query
-    connection.query(`SELECT * FROM ${table} WHERE id=${id}`, (err, data) => {
+    connection.query(`SELECT * FROM ${table} WHERE id=?`, id, (err, data) => {
       if (err) {
         reject(err);
       }
@@ -148,7 +148,7 @@ async function query(table, query, join) {
   return new Promise((resolve, reject) => {
     connection.query(
       `SELECT * FROM ${table} ${joinQuery} WHERE ${table}.?`,
-      // ? es el valor que se recibe en la query, en este caso user_from:id
+      // ? es el valor que se recibe en la query, en este caso user_from:id o username:username si viene de login
       query,
       (err, data) => {
         if (err) {

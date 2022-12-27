@@ -34,7 +34,7 @@ class PostController {
     }
 
     // Obtenemos la respuesta al momento de insertar un post
-    return this.store.inser(TABLE, post);
+    return this.store.insert(TABLE, post);
   }
 
   // Modificar un post

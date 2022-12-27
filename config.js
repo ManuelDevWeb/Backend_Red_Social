@@ -12,7 +12,7 @@ module.exports = {
     password: process.env.MYSQL_PASSWORD || "admin123",
     database: process.env.MYSQL_DB || "db_redSocial",
   },
-  mysqlServide: {
+  mysqlService: {
     host: process.env.MYSQL_SRV_HOST || "localhost",
     port: process.env.MYSQL_SRV_PORT || 3001,
   },
