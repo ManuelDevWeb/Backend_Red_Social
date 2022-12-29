@@ -9,8 +9,7 @@ const config = require("./../config");
 const axiosRequest = new AxiosInstance({
   baseURL: `http://${config.mysqlService.host}:${config.mysqlService.port}`,
   headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
+    "content-type": "application/json",
   },
 });
 
@@ -41,4 +40,12 @@ async function remove(table, id) {
   return await axiosRequest.send(`/${table}/${id}`, "DELETE");
 }
 
-module.exports = { list, get, insert, update, remove };
+// Funcion para buscar datos de una tabla por atributo diferente a id, hace peticion a otra API (Microservicio)
+async function query(table, query, join = "") {
+  return await axiosRequest.send(table + "/query", "POST", {
+    query,
+    join,
+  });
+}
+
+module.exports = { list, get, insert, update, remove, query };

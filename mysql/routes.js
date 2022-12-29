@@ -81,4 +81,20 @@ router.delete("/:table/:id", async (req, res, next) => {
   }
 });
 
+// Obtener un dato de una tabla por atributo diferente a id
+router.post("/:table/query", async (req, res, next) => {
+  try {
+    // Llamamos metodo encargado de obtener dato por atributo diferente a id
+    const element = await store.query(
+      req.params.table,
+      req.body.query,
+      req.body.join
+    );
+    // Enviando respuesta a traves de la funcion personalizada
+    response.succes(req, res, element, 200);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;
