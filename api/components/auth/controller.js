@@ -1,5 +1,5 @@
 // Importando bcrypt
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 // Importando funciones del jwt
 const jwtAuth = require("../../../auth");
