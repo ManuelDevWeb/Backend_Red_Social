@@ -6,7 +6,7 @@ const response = require("../../../network/response");
 // Importando controller de post instanciado
 const postController = require("./index");
 // Importando middleware seguridad
-const secure = require("../user/secure");
+const secure = require("../../../api/components/user/secure");
 
 // Instanciando routes de express
 const router = express.Router();

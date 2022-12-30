@@ -1,4 +1,4 @@
-// Aca separamos la DB en un microservicio
+// Aca separamos la DB en un microservicio. (No siempre es la mejor idea, se prefiere separar en microservicios la API)
 
 // Definir una API para acceder (Ejecutar desde CMD: nodemon mysql/index.js)
 

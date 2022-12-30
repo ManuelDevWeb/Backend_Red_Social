@@ -3,6 +3,9 @@ module.exports = {
   api: {
     port: process.env.API_PORT || 3000,
   },
+  microservicePost: {
+    port: process.env.POST_PORT || 3002,
+  },
   jwt: {
     secret: process.env.JWT_SECRET || "keySecret",
   },
