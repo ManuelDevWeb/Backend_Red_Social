@@ -4,7 +4,7 @@ module.exports = {
     port: process.env.API_PORT || 3000,
   },
   microservicePost: {
-    port: process.env.POST_PORT || 3002,
+    port: process.env.POST_PORT || "",
   },
   jwt: {
     secret: process.env.JWT_SECRET || "keySecret",
@@ -20,4 +20,8 @@ module.exports = {
     port: process.env.MYSQL_SRV_PORT || 3001,
   },
   remoteDB: process.env.REMOTE_DB || false,
+  cacheService: {
+    host: process.env.CACHE_SRV_HOST || "localhost",
+    port: process.env.CACHE_SRV_PORT || 3003,
+  },
 };

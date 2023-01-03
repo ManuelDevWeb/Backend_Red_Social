@@ -1,10 +1,22 @@
 {
     "version":2,
+    "env":{
+        "MYSQL_HOST": "localhost",
+        "MYSQL_USER": "root",
+        "MYSQL_PASSWORD": "admin123",
+        "MYSQL_DB": "db_redSocial",
+        "MYSQL_SRV_HOST": "localhost",
+        "MYSQL_SRV_PORT":"3001",
+        "REMOTE_DB": false,
+        "JWT_SECRET": "KeySecret",
+        "POST_PORT": "@post_port",
+        "API_PORT": "3000"
+    },
     "builds":[{
-        "src":"./api/index.js",
+        "src":"api/index.js",
         "use":"@vercel/node"
     },{
-        "src":"./post/index.js",
+        "src":"post/index.js",
         "use":"@vercel/node"
     }],
     "routes":[{
