@@ -11,11 +11,12 @@ const router = express.Router();
 
 // Routes
 
-// Obtener todos los datos de la cache
+// Obtener todos los datos de la cache de una tabla
 router.get("/:table", async (req, res, next) => {
   try {
     // Llamamos metodo encargado de listar todos los datos
     const data = await store.list(req.params.table);
+    console.log(data);
     // Enviando respuesta a traves de la funcion personalizada
     response.succes(req, res, data, 200);
   } catch (error) {
@@ -23,7 +24,7 @@ router.get("/:table", async (req, res, next) => {
   }
 });
 
-// Obtener dato especifico de la cache
+// Obtener dato especifico de la cache de una tabla
 router.get("/:table/:id", async (req, res, next) => {
   try {
     // Llamamos metodo encargado de obtener un dato de la lista
@@ -35,7 +36,7 @@ router.get("/:table/:id", async (req, res, next) => {
   }
 });
 
-// Actualizar dato de la cache
+// Actualizar la cache de una tabla
 router.patch("/:table/:id", async (req, res, next) => {
   try {
     // Llamamos metodo encargado de actualizar un dato

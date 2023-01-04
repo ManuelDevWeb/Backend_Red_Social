@@ -17,6 +17,7 @@
     "mysql2": "^2.3.3",
     "nanoid": "^4.0.0",
     "nodemon": "^2.0.20",
+    "redis": "^4.5.1",
     "swagger-ui-express": "^4.6.0"
   }
 }

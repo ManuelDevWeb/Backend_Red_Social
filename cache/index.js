@@ -8,7 +8,7 @@ const express = require("express");
 // Importando configuracion
 const config = require("../config");
 // Importando rutas
-// const routes = require("./routes");
+const routes = require("./routes");
 
 // Instanciando app con express
 const app = express();

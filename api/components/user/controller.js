@@ -5,15 +5,27 @@ const TABLE = "user";
 
 // Class controller user
 class UserController {
-  constructor(store) {
+  constructor(store, cache) {
     // Inicializando el objeto con la variable store, en caso de que no venga nada toma por defecto el archivo de la ruta
     this.store = store || require("../../../store/dbDummy");
+    this.cache = cache || require("../../../store/redis");
   }
 
   // Listar todos los usuarios
-  listUsers() {
+  async listUsers() {
+    // Validamos si no esta en cache, si no hay usuarios consultamos y cacheamos datos
+    let users = await this.cache.list(TABLE);
+
+    if (!users) {
+      console.log("NO ESTABA EN CACHE, BUSCANDO EN DB");
+      users = await this.store.list(TABLE);
+      this.cache.update(TABLE, users);
+    } else {
+      console.log("NOS TRAEMOS DATOS DE CACHE");
+    }
+
     // Obtenemos la lista de datos de la tabla user
-    return this.store.list(TABLE);
+    return users;
   }
 
   // Obtener un usuario
